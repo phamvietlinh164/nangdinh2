@@ -16,7 +16,6 @@ class Question extends Component {
         this.setState({
             checked: ""
         })
-        console.log('abc')
         // console.log(nextProps);
         
     }
