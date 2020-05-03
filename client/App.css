@@ -43,6 +43,11 @@ body {
   position: relative;
 }
 
+.ques { 
+	display: flex;
+	flex-wrap: wrap;
+}
+
 
 .form-check span {
   position: absolute;

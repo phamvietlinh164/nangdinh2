@@ -3,10 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "^0.18.1",
         "babel-cli": "^6.26.0",
         "body-parser": "^1.18.2",
-        "bootstrap": "^3.3.7",
+        "bootstrap": "^3.4.1",
         "ejs": "^2.6.1",
         "express": "^4.16.3",
         "font-awesome": "^4.7.0",
@@ -14,9 +14,9 @@
         "jsonwebtoken": "^8.3.0",
         "mongoose": "^5.4.20",
         "nodemon": "^1.18.10",
-        "react": "^16.1.1",
-        "react-dom": "^16.1.1",
-        "react-router-dom": "^4.2.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-router-dom": "^5.1.2",
         "react-scripts": "1.1.1",
         "xlsx": "^0.12.13"
     },
@@ -33,7 +33,7 @@
         "rimraf": "^2.6.2",
         "style-loader": "^0.19.1",
         "webpack": "^3.10.0",
-        "webpack-dev-server": "^2.9.7"
+        "webpack-dev-server": "^2.11.5"
     },
     "scripts": {
         "webpack": "webpack",

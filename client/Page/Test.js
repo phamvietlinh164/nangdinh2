@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import Question_row_test from './../components/Test/Question_row_test';
+import Question_test from './../components/Test/Question_test';
+import Result from './../components/Test/Result';
+import Buttons from './../components/Test/Buttons';
 import { urlFind, shuffleArray } from './../New/Helpers';
 import {testData} from './../New/Constants';
 import Select from './../components/Select';
 import Spinner from './../components/Spinner';
+
 
 
 const styles = {
@@ -28,24 +31,22 @@ class Test extends Component {
         })
     }
 
-
-    showQuestion_row = (data) => {
+    showQuestion = (data) => {
         var result = null;
         // var i;
         if (data.length > 0) {
+            var data = data.slice(0, qus_num);
             result = data.map((question, index) => {
-                if (index % 2 === 0 && index < qus_num) {
+                question.ques_n = index;  
+                question.showResult = this.state.showResult;   
+                question.correct = this.correct;
                     
-                    return (
-                        <Question_row_test key={index}
-                            question_n={index}
-                            data_left={data[index]}
-                            data_right={data[index + 1]}
-                            showResult={this.state.showResult}
-                            correct={this.correct}
-                            clearChecked={this.state.clearChecked} />
-                    )
-                }
+                return (
+                    <Question_test key={index} 
+                        data={question}
+                        clearChecked={this.state.clearChecked}
+                        />
+                )
             });
 
         }
@@ -58,13 +59,12 @@ class Test extends Component {
             showResult: true,
             opacity: this.state.opacity === 0 ? 1 : 0,
             zIndex: this.state.zIndex === -1 ? 1 : -1
-        })
+        });
     }
 
     onClick2 = () => {
         if (this.state.data.length !== 0) {
             var data2 = shuffleArray(this.state.data);
-            // console.log(this.state.data.length)
             this.setState({
                 data: data2,
             })
@@ -74,6 +74,13 @@ class Test extends Component {
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
 
+    }
+
+    onClick3 = () => {
+        this.setState({
+            opacity: 0,
+            zIndex: -1
+        })
     }
 
     reFresh = () => {
@@ -88,8 +95,6 @@ class Test extends Component {
 
     handleSelectChange = async (major, unit, ques_type) => {
 
-        var data = [];
-        var i;
         var url = urlFind(major, unit, ques_type);
 
         this.setState({ loading: true })
@@ -103,15 +108,6 @@ class Test extends Component {
 
             if (response.status === 200) {
                 response.json().then(data => {
-                    // data.forEach((item, index) => {
-                    //     if(data[index].ans){
-                    //         if(data[index].ans.length !== 1){
-                    //             data.splice(index, 1)
-                    //         }
-                    //     }else {
-                    //         data.splice(index, 1)
-                    //     }
-                    // })
 
                     this.setState({
                         data: shuffleArray(data),
@@ -130,67 +126,33 @@ class Test extends Component {
             console.log('abc', reason)
             alert('Đã có lỗi xảy ra, vui lòng thử lại sau!')
         })
-
     }
 
     correct = (correct) => {
-        if(correct === 1){
-            this.setState({
-                correct: this.state.correct + 1
-            })
-        }else {
-            this.setState({
-                correct: this.state.correct - 1
-            })
-        }
-
+        this.setState({
+            correct: this.state.correct + correct
+        })
+        
     }
 
     render() {
 
-        
         return (
             <div className="content">
 
                 {this.state.loading && <Spinner />}
                 <Select handleSelectChange={this.handleSelectChange} />
                 <br /><br />
-                {this.showQuestion_row(this.state.data)}
+                <div className="container ques">
+                    {this.showQuestion(this.state.data)}
+                </div>
                 <br /><br />
 
                 {this.state.data.length !== 0 ?
-                    <div className="form-group">
-                        <label className="col-xs-12 col-sm-4 col-md-4 col-lg-4 control-label"></label>
-                        <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                            <button className="btn btn-primary" onClick={this.onClick}>
-                                Hiển thị kết quả
-                            </button>&nbsp;&nbsp;
-                            <button className="btn btn-primary" onClick={this.onClick2}>
-                                Test lại
-                            </button>
-                        </div>
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
-                    </div>
+                    <Buttons onClick={this.onClick} onClick2={this.onClick2}/>
                     : ""}
-                
-                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 result" style={{ ...styles, opacity: this.state.opacity, zIndex: this.state.zIndex }}>
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">
-                            Kết quả bài Test
-                            <span className="glyphicon glyphicon-remove" onClick={this.onClick}></span>
-                        </div>
-                        <div className="panel-body">
-                            Số câu đúng: {`${this.state.correct}`}/ {`${qus_num < this.state.data.length? qus_num: this.state.data.length}`} <br />
-                            
-                            {
-                                this.state.correct < (qus_num < this.state.data.length? qus_num: this.state.data.length)?
-                                <p>Kéo lên trên để xem các câu sai</p>: ""
-                            }
-                            
-                        </div>
-                    </div>
-                </div>
+
+                <Result opacity={this.state.opacity} zIndex={this.state.zIndex} length={this.state.data.length} correct={this.state.correct} onClick={this.onClick3}/>
             </div>
 
         );

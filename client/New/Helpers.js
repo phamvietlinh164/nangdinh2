@@ -1,8 +1,8 @@
-import { urlPre } from './Constants';
+import { urlPre, questionNumberPractice } from './Constants';
 // import React, { Component } from 'react';
 
 
-export const urlFind = (major: String, unit: String, ques_type: String) => {
+export const urlFind = (major, unit, ques_type) => {
 
     var url, param_3;
 
@@ -49,7 +49,7 @@ export const urlFind = (major: String, unit: String, ques_type: String) => {
     return url
 }
 
-export const shuffleArray: Array = (array: Array) => {
+export const shuffleArray = (array) => {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var temp = array[i];
@@ -80,7 +80,7 @@ export const shuffleArray: Array = (array: Array) => {
 
 // }
 
-export const uniqueArray: Array = (arr: Array) => {
+export const uniqueArray = (arr) => {
     var a = [];
     for (var i=0, l=arr.length; i<l; i++)
         if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
@@ -89,45 +89,102 @@ export const uniqueArray: Array = (arr: Array) => {
     return a;
 }
 
-export const sliceQues: Array = (data: Array) => {
-    var ch_data = JSON.parse(localStorage.getItem(localStorage.getItem('data')));
-
-    if(ch_data && ch_data.length > 0){
+export const sliceQues = (data) => {
+    
+    const testing = localStorage.getItem('testing');
+    
+    if(testing){
+        const localData = JSON.parse(localStorage.getItem('data'));
+        const localDataTesting = JSON.parse(localStorage.getItem('data'))[testing];
+        
         var a = [];
-        var i;
-        for(i = 0; i < data.length; i = i + 1){
-            if(ch_data.indexOf(data[i].id) === -1){
-                a.push(data[i])
+
+        data.forEach((item) => {
+            if(localDataTesting.indexOf(item.id) === -1){
+                a.push(item)
             }
-        }
+        })
 
+        localData[testing] = a.length > 0? uniqueArray(localDataTesting): [];
+        localStorage.setItem('data', JSON.stringify(localData));
 
-        if(a.length !== 0){
-            localStorage.setItem(localStorage.getItem('data'), JSON.stringify(uniqueArray(ch_data)))
-            return shuffleArray(a);
+        
+        if(a.length > 0){
+            return shuffleArray(a).slice(0, questionNumberPractice);
 
         }else {
-            localStorage.removeItem(localStorage.getItem('data'));
-            return shuffleArray(data)
-        }
-    }else {
-        return shuffleArray(data)
-    }
-    
-
-}
-
-export const addLocSto: void = (string: String) => {
-    if(localStorage.getItem('data') && localStorage.getItem(localStorage.getItem('data'))){
-        if(localStorage.getItem('data') !== string){
-            localStorage.removeItem(localStorage.getItem('data'));
-            localStorage.setItem('data', string)
+            return shuffleArray(data).slice(0, questionNumberPractice)
         }
         
+
+    }else {
+        return shuffleArray(data).slice(0, questionNumberPractice)
+    }
+    
+
+}
+
+export const addLocalStorage = (string) => {
+    var data;
+    localStorage.setItem('testing', string)
+    try {
+        data = JSON.parse(localStorage.getItem('data'));
+    }catch (err){
+        localStorage.setItem('data', JSON.stringify({}))
+    }
+
+
+    if(data && typeof data === 'object' && data !== null){
+        
+        var a;
+        for(a in data){
+            if(data[a].length === 0){
+                delete data[a];
+            }
+        }
+        if(data[string]){
+            return
+        }else {
+            data[string] = [];
+        }
+
+        var i = 0;
+        var x, y;
+        for(x in data){
+            i = i + 1
+        }
+        if(i > 3){
+            for(y in data){
+                delete data[y];
+                break
+            }
+        }
+        localStorage.setItem('data', JSON.stringify(data))
+        // localStorage.setItem('testing', string)
+        
+    }else {
+        const obj = {};
+        obj[string] = []
+        localStorage.setItem('data', JSON.stringify(obj))
+        // localStorage.setItem('testing', string)
     }
     
 }
 
-// 
+
+export const addCheckedQuestion = (id) => {
+    if((localStorage.getItem('testing'))){
+        const data = JSON.parse(localStorage.getItem('data'));
+        const testing = localStorage.getItem('testing');
+        data[testing].push(id);
+        localStorage.setItem('data', JSON.stringify(data))
+    }
+    
+    
+}
+
+
+
+
 
 

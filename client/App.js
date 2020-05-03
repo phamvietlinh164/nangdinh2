@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import axios from 'axios';
-import { urlPre } from './New/Constants';
-import { getCookie } from './New/Helpers';
 import Menu from './components/Menu';
 import Header from './components/Header';
 import Body_logo from './components/Body_logo';
@@ -16,7 +13,6 @@ class App extends Component {
 
 
     render() {
-
         return (
             <HashRouter>
 

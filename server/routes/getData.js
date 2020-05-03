@@ -87,19 +87,19 @@ function getData(req, res) {
 	data3.forEach(function(item, index){
 		// data3[index].id = index + 1;
 		if(data3[index].ques){
-			data3[index].ques = function1(data3[index].ques)
+			data3[index].ques = function1(data3[index].ques).trim()
 		}
 		if(data3[index].ch_a){
-			data3[index].ch_a = function1(data3[index].ch_a)
+			data3[index].ch_a = function1(data3[index].ch_a).trim()
 		}
 		if(data3[index].ch_b){
-			data3[index].ch_b = function1(data3[index].ch_b)
+			data3[index].ch_b = function1(data3[index].ch_b).trim()
 		}
 		if(data3[index].ch_c){
-			data3[index].ch_c = function1(data3[index].ch_c)
+			data3[index].ch_c = function1(data3[index].ch_c).trim()
 		}
 		if(data3[index].ch_d){
-			data3[index].ch_d = function1(data3[index].ch_d)
+			data3[index].ch_d = function1(data3[index].ch_d).trim()
 		}
 		
 		

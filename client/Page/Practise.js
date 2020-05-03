@@ -1,47 +1,48 @@
 import React, { Component } from 'react';
-import Question_row from './../components/Practise/Question_row';
-import { urlFind, shuffleArray, sliceQues, addLocSto } from './../New/Helpers';
+import Question from './../components/Practise/Question';
+import Button from './../components/Practise/Button';
+import { urlFind, shuffleArray, sliceQues, addLocalStorage } from './../New/Helpers';
 import { testData } from './../New/Constants';
 import Select from './../components/Select';
-import Body_logo from './../components/Body_logo';
 import Spinner from './../components/Spinner';
 
-const qus_num = 50;
 
 class Practise extends Component {
 
     state = {
-        data: testData,
-        sh_data: testData,
+        data: [...testData],
+        sh_data: [...testData],
         loading: false
     }
 
 
-    showQuestion_row = (data) => {
+    showQuestion = (data) => {
         var result = null;
+
         // var i;
         if (data.length > 0) {
             result = data.map((question, index) => {
-                if (index % 2 === 0 && index < qus_num) {
-                    return (
-                        <Question_row key={index} question_n={index} data_left={data[index]} data_right={data[index + 1]} />
-                    )
-                }
-            });
+                question.ques_n = index;
+                return (
+                    <Question key={index} data={question} />
+                )
 
+            });
         }
 
         return result
     }
 
+    componentDidMount = () => {
+        localStorage.removeItem('testing');
+    }
+
     onClick = () => {
         // if (this.state.sh_data.length !== 0) {
             this.setState({
-                sh_data: sliceQues(this.state.data).slice(0, qus_num)
+                sh_data: sliceQues(this.state.data)
             })
         // }
-
-
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
 
@@ -49,11 +50,9 @@ class Practise extends Component {
 
     handleSelectChange = async (major, unit, ques_type) => {
 
-        var data = [];
         var url = urlFind(major, unit, ques_type);
 
         this.setState({ loading: true })
-
 
         fetch(url, {
             method: 'GET',
@@ -63,34 +62,13 @@ class Practise extends Component {
             });
             if (response.status === 200) {
                 response.json().then(data => {
-                    // data.forEach((item, index) => {
-                    //     if(data[index].ans){
-                    //         if(data[index].ans.length > 1){
-                    //             data.splice(index, 1)
-                    //         }
-                    //     }else {
-                    //         data.splice(index, 1)
-                    //     }
-                    // })
-
-                    // this.setState({
-                    //     data: data
-                    // });
+                    
+                    addLocalStorage(`${major}/${unit}/${ques_type}`);
                     this.setState({
-                        data: data
+                        data: data,
+                        sh_data: sliceQues(data)
                     })
 
-                    if(localStorage.getItem('data') && localStorage.getItem('data') === `${major}/${unit}/${ques_type}`){
-                        this.setState({
-                            sh_data: sliceQues(data).slice(0, qus_num)
-                        })
-                    }else {
-                        this.setState({
-                            sh_data: shuffleArray(data).slice(0, qus_num)
-                        })
-                    }
-                    
-                    addLocSto(`${major}/${unit}/${ques_type}`)
                 })
             } else {
                 alert('Đã có lỗi xảy ra, vui lòng thử lại sau!')
@@ -109,25 +87,17 @@ class Practise extends Component {
         return (
 
             <div className="content">
-
                 {this.state.loading && <Spinner />}
 
                 <Select handleSelectChange={this.handleSelectChange} />
                 <br /><br />
-                {this.showQuestion_row(this.state.sh_data)}
+                <div className="container ques">
+                    {this.showQuestion(this.state.sh_data)}
+                </div>
                 <br />
 
                 {this.state.sh_data.length !== 0 ?
-                    <div className="form-group">
-                        <label className="col-md-4 control-label"></label>
-                        <div className="col-md-4">
-                            <button id="singlebutton" name="singlebutton" className="btn btn-primary center-block" onClick={this.onClick}>
-                                Tiếp tục
-                        </button>
-                        </div>
-                        <br />
-                        <br />
-                    </div>
+                    <Button onClick={this.onClick} />
                     : ""}
                     
             </div>

@@ -2,25 +2,15 @@ import React, { Component } from 'react';
 
 class Question_test extends Component {
 
-
     constructor(props) {
         super(props);
         this.state = ({
-            checked: "",
-            // color: false
+            checked: ""
         })
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        // if(nextProps.showResult && nextProps.showResult !== this.props.showResult){
-        //     this.setState({
-        //         color: true
-        //     })
-        // }else if(nextProps.showResult !== this.props.showResult){
-        //      this.setState({
-        //         color: false
-        //     })
-        // }
+
+    UNSAFE_componentWillReceiveProps = (nextProps) => {
         
         if(nextProps.clearChecked !== this.props.clearChecked){
             this.setState({
@@ -30,27 +20,30 @@ class Question_test extends Component {
     }
 
     handleOptionChange = (event) => {
+        var props = this.props.data
         this.setState({
             [event.target.name]: event.target.value
         })
-        if(event.target.value === this.props.answer){
-            this.props.correct(1);
-        }else if(event.target.value !== this.props.answer && this.state.checked === this.props.answer){
-            this.props.correct(-1);
+        if(event.target.value === props.ans){
+            props.correct(1);
+        }else if(event.target.value !== props.ans && this.state.checked === props.ans){
+            props.correct(-1);
         }
     }
 
 
     render() {
         
+        const props = this.props.data;
+
         return (
-            <div className="col-md-6 col-lg-6 mb-2" style={this.props.answer !== this.state.checked && this.props.showResult? {'color': 'red'}: {}}>
+            <div className="col-md-6 col-lg-6 mb-2" style={props.ans !== this.state.checked && props.showResult? {'color': 'red'}: {}}>
                 <form>
 
                     <div className="form-group">
                         <h4>
-                            <span><b>Question {this.props.question_n + 1}: </b></span>
-                            {this.props.question}
+                            <span><b>Question {props.ques_n + 1}: </b></span>
+                            {props.ques}
                         </h4>
                     </div>
 
@@ -62,7 +55,7 @@ class Question_test extends Component {
                                 value="a"
                                 checked={this.state.checked === "a"}
                                 onChange={this.handleOptionChange} />&nbsp;&nbsp;
-					    	{this.props.choice_a}
+					    	{props.ch_a}
                         </label>
                     </div>
                     <div className="form-check">
@@ -73,10 +66,10 @@ class Question_test extends Component {
                                 value="b"
                                 checked={this.state.checked === "b"}
                                 onChange={this.handleOptionChange} />&nbsp;&nbsp;
-					    	{this.props.choice_b}
+					    	{props.ch_b}
                         </label>
                     </div>
-                    {this.props.choice_c?
+                    {props.ch_c?
                         <div className="form-check">
                             <label className="form-check-label">
                                 <input className="form-check-input"
@@ -85,11 +78,11 @@ class Question_test extends Component {
                                     value="c"
                                     checked={this.state.checked === "c"}
                                     onChange={this.handleOptionChange} />&nbsp;&nbsp;
-						    	{this.props.choice_c}
+						    	{props.ch_c}
                             </label>
                         </div>
                         : ""}
-                    {this.props.choice_d?
+                    {props.ch_d?
                         <div className="form-check">
                             <label className="form-check-label">
                                 <input className="form-check-input"
@@ -98,7 +91,7 @@ class Question_test extends Component {
                                     value="d"
                                     checked={this.state.checked === "d"}
                                     onChange={this.handleOptionChange} />&nbsp;&nbsp;
-						    	{this.props.choice_d}
+						    	{props.ch_d}
                             </label>
                         </div>
                         : ""}
