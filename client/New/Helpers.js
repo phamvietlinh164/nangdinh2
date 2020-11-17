@@ -12,7 +12,9 @@ export const urlFind = (major, unit, ques_type) => {
             if (unit.substring(0, 3) === "TWR") {
                 param_3 = "TWR"
             } else if (unit.substring(0, 2) === "KT") {
-                if (unit.substring(3, 4) === "A") {
+                if (unit === "KT-CR-APP") {
+                    param_3 = "KT-CR-APP"
+                } else if (unit.substring(3, 4) === "A") {
                     param_3 = "KTACC"
                 } else {
                     param_3 = "KTAPP"
@@ -35,7 +37,12 @@ export const urlFind = (major, unit, ques_type) => {
             if (major === "klmn") {
                 url = `${urlPre}/kl/MN/${unit}`
             } else if (major === "klmt") {
-                url = `${urlPre}/kl/MT/${unit}`
+                if (unit === "KT-CR-APP") {
+                    url = `${urlPre}/kl/MT/TWR-CR`
+                } else {
+                    url = `${urlPre}/kl/MT/${unit}`
+                }
+
             } else {
                 url = `${urlPre}/kl/MB/${unit}`
             }
@@ -82,45 +89,45 @@ export const shuffleArray = (array) => {
 
 export const uniqueArray = (arr) => {
     var a = [];
-    for (var i=0, l=arr.length; i<l; i++)
+    for (var i = 0, l = arr.length; i < l; i++)
         if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
             a.push(arr[i]);
-    
+
     return a;
 }
 
 export const sliceQues = (data) => {
-    
+
     const testing = localStorage.getItem('testing');
-    
-    if(testing){
+
+    if (testing) {
         const localData = JSON.parse(localStorage.getItem('data'));
         const localDataTesting = JSON.parse(localStorage.getItem('data'))[testing];
-        
+
         var a = [];
 
         data.forEach((item) => {
-            if(localDataTesting.indexOf(item.id) === -1){
+            if (localDataTesting.indexOf(item.id) === -1) {
                 a.push(item)
             }
         })
 
-        localData[testing] = a.length > 0? uniqueArray(localDataTesting): [];
+        localData[testing] = a.length > 0 ? uniqueArray(localDataTesting) : [];
         localStorage.setItem('data', JSON.stringify(localData));
 
-        
-        if(a.length > 0){
+
+        if (a.length > 0) {
             return shuffleArray(a).slice(0, questionNumberPractice);
 
-        }else {
+        } else {
             return shuffleArray(data).slice(0, questionNumberPractice)
         }
-        
 
-    }else {
+
+    } else {
         return shuffleArray(data).slice(0, questionNumberPractice)
     }
-    
+
 
 }
 
@@ -129,58 +136,58 @@ export const addLocalStorage = (string) => {
     localStorage.setItem('testing', string)
     try {
         data = JSON.parse(localStorage.getItem('data'));
-    }catch (err){
+    } catch (err) {
         localStorage.setItem('data', JSON.stringify({}))
     }
 
 
-    if(data && typeof data === 'object' && data !== null){
-        
+    if (data && typeof data === 'object' && data !== null) {
+
         var a;
-        for(a in data){
-            if(data[a].length === 0){
+        for (a in data) {
+            if (data[a].length === 0) {
                 delete data[a];
             }
         }
-        if(data[string]){
+        if (data[string]) {
             return
-        }else {
+        } else {
             data[string] = [];
         }
 
         var i = 0;
         var x, y;
-        for(x in data){
+        for (x in data) {
             i = i + 1
         }
-        if(i > 3){
-            for(y in data){
+        if (i > 3) {
+            for (y in data) {
                 delete data[y];
                 break
             }
         }
         localStorage.setItem('data', JSON.stringify(data))
         // localStorage.setItem('testing', string)
-        
-    }else {
+
+    } else {
         const obj = {};
         obj[string] = []
         localStorage.setItem('data', JSON.stringify(obj))
         // localStorage.setItem('testing', string)
     }
-    
+
 }
 
 
 export const addCheckedQuestion = (id) => {
-    if((localStorage.getItem('testing'))){
+    if ((localStorage.getItem('testing'))) {
         const data = JSON.parse(localStorage.getItem('data'));
         const testing = localStorage.getItem('testing');
         data[testing].push(id);
         localStorage.setItem('data', JSON.stringify(data))
     }
-    
-    
+
+
 }
 
 

@@ -18,11 +18,11 @@ export const testData = [
         id: 2,
         ques: "Who have the right to open an airport or aerodrome   based on the airport or aerodrome system plans?",
         ch_a: "The Prime Minister",
-      ch_b: "The Minister of Transport",
-      ch_c: "The  Director of Airport Authority",
-      ch_d: "None of above",
-      ans: "a",
-      test: true
+        ch_b: "The Minister of Transport",
+        ch_c: "The  Director of Airport Authority",
+        ch_d: "None of above",
+        ans: "a",
+        test: true
     },
     {
         ans: "c",
@@ -44,5 +44,5 @@ export const testData = [
         ans: "c",
         test: true
     }
-    
+
 ]

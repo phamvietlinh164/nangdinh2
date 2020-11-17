@@ -42,6 +42,9 @@ export const unit_op = {
         ["Playku TWR", "TWR-PLK"],
         ["Phù Cát TWR", "TWR-PCA"],
         ["Đà Nẵng GCU", "GCU-DAN"],
+        ["Tuy Hòa Tower", "TWR-TH"],
+        ["Cam Ranh Tower", "TWR-CR"],
+        ["Kíp trưởng Cam Ranh APP", "KT-CR-APP"],
     ],
     "klmn": [
         ["Hồ Chí Minh ACC Radar", "HCM-ACC-RADAR"],
@@ -51,8 +54,6 @@ export const unit_op = {
         ["Tân Sơn Nhất APP Non Radar", "TSN-APP-NON-RADAR"],
         ["Kíp trưởng Tân Sơn Nhất APP TWR", "KT-TSN-APP-TWR"],
         ["Tân Sơn Nhất Tower", "TWR-TSN"],
-        ["Tuy Hòa Tower", "TWR-TH"],
-        ["Cam Ranh Tower", "TWR-CR"],
         ["Buôn Ma Thuột Tower", "TWR-BMT"],
         ["Liên Khương Tower", "TWR-LK"],
         ["Rạch Giá Tower", "TWR-RG"],
