@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
-const {reHash} = require('../New/helpers');
+const { reHash } = require('../New/helpers');
 
 function checkAuth(req, res) {
-	
-	try{
+
+	try {
 		const decode = jwt.verify(reHash(req.headers.authorization), 'secret');
-	}catch(err) {
+	} catch (err) {
 		return res.status(401).json({
 			message: 'Unauthorized!'
 		})
@@ -15,7 +15,7 @@ function checkAuth(req, res) {
 		message: 'Authorization!'
 	})
 
-	
+
 }
 
 module.exports = checkAuth;
