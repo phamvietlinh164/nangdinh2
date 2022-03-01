@@ -1,12 +1,13 @@
 //server/server.js
 
 var express = require('express');
-var getData = require('./routes/getData.js');
+// var getData = require('./routes/getData.js');
+var getDataFol2 = require('./routes/getDataFol2.js');
 // var login = require('./routes/login.js');
 // var checkAuth = require('./routes/checkAuth.js');
 var path = require('path');
 var bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 var app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../dist'));
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 // 	db: {native_parser: true},
 // 	server: {poolSize: 5},
 // 	// user:
-// 	// pass: 	
+// 	// pass:
 // };
 // mongoose.Promise = global.Promise;
 // mongoose.connect('mongodb://vietlinhco:Ankedalinhco1@ds127783.mlab.com:27783/users_test_app', options).then(
@@ -45,7 +46,8 @@ app.use((req, res, next) => {
 
 
 app.get('/favicon.ico', (req, res) => res.status(204));
-app.use('/', getData);
+// app.use('/', getData);
+app.use('/', getDataFol2);
 // app.use('/login', login);
 // app.use('/checkauth', checkAuth);
 

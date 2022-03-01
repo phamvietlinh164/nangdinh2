@@ -4,7 +4,7 @@ const { mode, replaceSomeLetter } = require('../New/helpers')
 // const jwt = require('jsonwebtoken');
 // const { reHash } = require('../New/helpers');
 
-function getData(req, res) {
+function getDataFol(req, res) {
 
 	// try{
 	// 	const decode = jwt.verify(reHash(req.headers.authorization), 'secret');
@@ -19,56 +19,72 @@ function getData(req, res) {
 	var i;
 	var ans;
 
+
 	try {
-		var workbook = XLSX.readFile(`data${req.url}.xlsx`);
-		var first_sheet_name = workbook.SheetNames[0];
-		// var address_of_cell = 'A1';
 
-		/* Get worksheet */
-		var worksheet = workbook.Sheets[first_sheet_name];
+        const file = fs.readdirSync(`./data${req.url}`)
+        i = 0;
+        file.forEach((value, index) => {
+            if (value.slice(value.length - 5) === ".xlsx"){
+                var workbook = XLSX.readFile(`data${req.url}/${value}`);
 
-		/* Find desired cell */
-		// var desired_cell = worksheet[address_of_cell];
+                workbook.SheetNames.forEach((value2, index2) => {
+                    var first_sheet_name = workbook.SheetNames[index2];
+                    var worksheet = workbook.Sheets[first_sheet_name];
 
-		/* Get the value */
-		// var desired_value = (desired_cell ? desired_cell.v : undefined);
+                    /* Find desired cell */
+                    // var desired_cell = worksheet[address_of_cell];
 
-		var currentFile = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-		var lenArr = currentFile.map(item => item.length)
-		var modeLength = mode(lenArr)
-		i = 0;
-		currentFile.forEach(item => {
-			if (item.length > 4 && item[modeLength - 5]) {
-				ans = false;
-				if (item[modeLength - 5].includes("1") || item[modeLength - 5] === "a" || item[modeLength - 5] === "A") {
-					ans = "a"
-				} else if (item[modeLength - 5].includes("2") || item[modeLength - 5] === "b" || item[modeLength - 5] === "B") {
-					ans = "b"
-				} else if (item[modeLength - 5].includes("3") || item[modeLength - 5] === "b" || item[modeLength - 5] === "C") {
-					ans = "c"
-				} else if (item[modeLength - 5].includes("4") || item[modeLength - 5] === "b" || item[modeLength - 5] === "D") {
-					ans = "d"
-				}
+                    /* Get the value */
+                    // var desired_value = (desired_cell ? desired_cell.v : undefined);
 
-				if (ans) {
-					data.push({
-						"id": i + 1,
-						"ques": item[modeLength - 6],
-						"ch_a": item[modeLength - 4],
-						"ch_b": item[modeLength - 3],
-						"ch_c": item[modeLength - 2],
-						"ch_d": item[modeLength - 1],
-						"ans": ans
-					})
-					i = i + 1
-				}
-			}
-		})
+                    var currentFile = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    var lenArr = currentFile.map(item => item.length)
+                    var modeLength = mode(lenArr)
+
+                    currentFile.forEach(item => {
+                        if (item.length > 4 && item[modeLength - 5]) {
+                            ans = false;
+                            if (item[modeLength - 5].includes("1") || item[modeLength - 5] === "a" || item[modeLength - 5] === "A") {
+                                ans = "a"
+                            } else if (item[modeLength - 5].includes("2") || item[modeLength - 5] === "b" || item[modeLength - 5] === "B") {
+                                ans = "b"
+                            } else if (item[modeLength - 5].includes("3") || item[modeLength - 5] === "b" || item[modeLength - 5] === "C") {
+                                ans = "c"
+                            } else if (item[modeLength - 5].includes("4") || item[modeLength - 5] === "b" || item[modeLength - 5] === "D") {
+                                ans = "d"
+                            }
+
+                            if (ans) {
+                                data.push({
+                                    "id": i + 1,
+                                    "ques": item[modeLength - 6],
+                                    "ch_a": item[modeLength - 4],
+                                    "ch_b": item[modeLength - 3],
+                                    "ch_c": item[modeLength - 2],
+                                    "ch_d": item[modeLength - 1],
+                                    "ans": ans
+                                })
+                                i = i + 1
+                            }
+                        }
+                    })
+                })
+
+                // var address_of_cell = 'A1';
+
+                /* Get worksheet */
+
+            }
+
+
+        })
+
 
 
 	} catch (err) {
-		console.log(err)
-		console.log(`./data${req.url}`)
+		// console.log(err)
+		// console.log(`./data${req.url}`)
 
 		if (err.code === 'ENOENT') {
 			const file = fs.readdirSync(`./data${req.url}`)
@@ -167,4 +183,4 @@ function getData(req, res) {
 
 }
 
-module.exports = getData;
+module.exports = getDataFol;
