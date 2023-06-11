@@ -1,6 +1,6 @@
 // export const urlPre = `https://nangdinh2.herokuapp.com/`;
 export const questionNumberPractice = 50;
-export const urlPre = `http://localhost:8000`;
+export const urlPre = ``;
 // export const urlPre = `http://localhost:8000/data`;
 
 export const testData = [
