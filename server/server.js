@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 // app.use('/', getData);
-app.get('/health', (req, res) => { return res.json({ message: 'ok2' }) });
+app.get('/health', (req, res) => { return res.json({ message: 'ok3' }) });
 app.use('/', getDataFol2);
 // app.use('/login', login);
 // app.use('/checkauth', checkAuth);
