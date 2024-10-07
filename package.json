@@ -45,6 +45,7 @@
         "serve": "webpack-dev-server",
         "start": "npm run clean && webpack && nodemon --exec babel-node -- bin/www",
         "start1": "nodemon --exec babel-node bin/www",
-        "start2": "nodemon bin/www"
+        "start2": "nodemon bin/www",
+        "start3": "node server/index"
     }
 }
